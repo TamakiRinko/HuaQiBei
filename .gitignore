@@ -1,7 +1,5 @@
 ##ignore this file##
-out
 
 .idea
-*.iml
 __pycache__
 venv
