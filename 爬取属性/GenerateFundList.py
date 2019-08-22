@@ -1,6 +1,6 @@
 import pandas as pd
 
-pathIndex = "基金列表及属性/"
+pathIndex = "../基金列表及属性/"
 inpathFile = pathIndex + "基金属性_All.csv"
 outpathFile = pathIndex + "基金列表_Final.csv"
 

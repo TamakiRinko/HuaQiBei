@@ -3,10 +3,10 @@ from bs4 import BeautifulSoup
 import traceback
 import re
 import pandas as pd
-import Eigenvector
+import 爬取属性.Eigenvector
 
-outpathFile = "基金列表及属性/基金属性_Demo.csv"
-inpathFile = "基金列表及属性/基金列表_Demo.csv"
+outpathFile = "../基金列表及属性/基金属性_Demo.csv"
+inpathFile = "../基金列表及属性/基金列表_Demo.csv"
 outEncoding = "utf_8_sig"
 inEncoding = "gbk"
 
@@ -81,7 +81,7 @@ def main():
     slist = []
     getStockList(slist, fundList)
     FundFrame = getStockInfo(slist, stock_info_url)
-    Eigenvector.EigenVector(FundFrame, outEncoding, outpathFile)
+    爬取属性.Eigenvector.EigenVector(FundFrame, outEncoding, outpathFile)
 
 
 main()
