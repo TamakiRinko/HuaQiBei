@@ -7,18 +7,21 @@ import requests
 import time
 import random
 import math
+pathIndex = "../基金列表及属性/"
+
 
 def Train(data):
     pass
 
+
 # 以7.1为标准，计算时间戳
 def Time(t):
-
     pass
 
+
 # 首先将5个类别的数据分离开来
-RawData = pd.read_csv("TrainData.csv")
-UserCategory = ["C1","C2","C3","C4","C5"]
+RawData = pd.read_csv(pathIndex + "TrainData.csv")
+UserCategory = ["C1", "C2", "C3", "C4", "C5"]
 TrainList = []
 for Category in UserCategory:
     List = RawData.ix[RawData.用户类型 == Category]
@@ -66,7 +69,7 @@ for i in range(UserNum):
         PointTypeList.append(UserData.iat[0,2])
 
 PointCSV = pd.DataFrame({"User":PointUserList,"FundCode":PointFundList,"Point":PointList,'Type':PointTypeList})
-PointCSV.to_csv("Point_2.csv")
+PointCSV.to_csv(pathIndex + "Point.csv")
 
 
 

@@ -7,6 +7,7 @@ import requests
 import time
 import random
 import math
+pathIndex = "../基金列表及属性/"
 
 def Train(data):
     pass
@@ -17,7 +18,7 @@ def Time(t):
     pass
 
 # 首先将5个类别的数据分离开来
-RawData = pd.read_csv("TrainData.csv")
+RawData = pd.read_csv(pathIndex + "TrainData.csv")
 UserCategory = ["C1","C2","C3","C4","C5"]
 TrainList = []
 for Category in UserCategory:
@@ -59,7 +60,7 @@ for i in range(UserNum):
         Matrix[i][j] = (Invest/InvestSum)*math.log(1+t/MaxTime)+1
 
 
-file=open('Judge.txt','w')
+file=open(pathIndex + 'Judge.txt','w')
 file.write('[')
 for List in Matrix[0:-1]:
     file.write('[')

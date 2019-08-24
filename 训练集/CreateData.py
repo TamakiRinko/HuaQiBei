@@ -5,6 +5,9 @@ import numpy as np
 import requests
 import time
 import random
+pathIndex = "../基金列表及属性/"
+
+
 # 分权随机函数
 def WeightRand(weightlist):
     weight = random.randint(1,100)
@@ -14,11 +17,12 @@ def WeightRand(weightlist):
             return i
     return -1
 
+
 # 读取基金列表
-StockFrame = pd.read_csv("StockList.csv",dtype=str) 
-AllocFrame = pd.read_csv("AllocList.csv",dtype=str)
-BondFrame = pd.read_csv("BondList.csv",dtype=str)
-CurrFrame = pd.read_csv("CurrList.csv",dtype=str)
+StockFrame = pd.read_csv(pathIndex + "StockList.csv", dtype=str)
+AllocFrame = pd.read_csv(pathIndex + "AllocList.csv", dtype=str)
+BondFrame = pd.read_csv(pathIndex + "BondList.csv", dtype=str)
+CurrFrame = pd.read_csv(pathIndex + "CurrList.csv", dtype=str)
 
 
 UserNum = 2000
@@ -153,6 +157,6 @@ for UserCode in range(UserNum):  #UserNum
 
 TrainData = pd.DataFrame({"用户编码":UserList,"用户类型":TypeList,"性别":SexList,"开户时长":RegisterList,"帐户余额":RemainList,"年龄":AgeList,"基金代码":BuyList,"基金类型":CategoryList,"投资时间":TimeList,"投资金额":MoneyList,"投资方式":WayList,"手续费":ChargeList})
 List = TrainData.loc[(TrainData.基金类型 == "债券型") | (TrainData.基金类型 == "货币型") | (TrainData.基金类型 == "混合型") | (TrainData.基金类型 == "股票型")]
-List.to_csv("TrainData.csv",encoding="utf_8_sig")
+List.to_csv(pathIndex + "TrainData.csv",encoding="utf_8_sig")
 
 

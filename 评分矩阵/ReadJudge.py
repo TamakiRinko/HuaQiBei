@@ -8,7 +8,7 @@ import time
 import random
 import math
 
-RawData = pd.read_csv("TrainData_2w.csv")
+RawData = pd.read_csv("../基金列表及属性/TrainData.csv")
 UserCategory = ["C1","C2","C3","C4","C5"]
 # 将用户编码与基金代码按照不重合的规则重编码
 UserList = RawData.用户编码.unique()

@@ -6,3 +6,4 @@ print(np.where(List == 2))
 print(type(np.zeros((5, 6), dtype=int)))
 
 print([[2, 3, 4], [3, 4, 5]][1][2])
+

@@ -3,12 +3,12 @@ from bs4 import BeautifulSoup
 import traceback
 import re
 import pandas as pd
-import 爬取属性.Eigenvector
+import 爬取属性.GenerateEigen
 
-outpathFile = "../基金列表及属性/基金属性_Demo.csv"
-inpathFile = "../基金列表及属性/基金列表_Demo.csv"
+outpathFile = "../基金列表及属性/基金属性.csv"
+inpathFile = "../基金列表及属性/基金列表_四种类型.csv"
 outEncoding = "utf_8_sig"
-inEncoding = "gbk"
+inEncoding = "utf_8_sig"
 
 
 def getHTMLText(url, code="utf-8"):
@@ -25,7 +25,7 @@ def getStockList(lst, fundList):
     fundCode = fundList.FundCode
     fundName = fundList.name
     fundType = fundList.type
-    print(len(fundCode))
+    # print(len(fundCode))
     for i in range(len(fundCode)):
         lst.append([str(fundCode[i]).zfill(6), fundName[i], fundType[i]])
 
@@ -81,7 +81,7 @@ def main():
     slist = []
     getStockList(slist, fundList)
     FundFrame = getStockInfo(slist, stock_info_url)
-    爬取属性.Eigenvector.EigenVector(FundFrame, outEncoding, outpathFile)
+    爬取属性.GenerateEigen.EigenVector(FundFrame, outEncoding, outpathFile)
 
 
 main()
