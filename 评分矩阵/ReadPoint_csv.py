@@ -1,13 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-import sklearn
-from sklearn import model_selection as ms
-import scipy.sparse as sp
-from scipy.sparse.linalg import svds
-from sklearn.metrics import mean_squared_error
-from math import sqrt
-
 import pandas as pd
 import numpy as np
 import math
@@ -110,4 +103,5 @@ def main():
     # index = index + 1
 
 
-main()
+if __name__ == '__main__':
+    main()

@@ -16,21 +16,23 @@ def EigenVector(fundList, outEncoding, outpathFile):
     print("\n生成中……")
     length = len(fundList)
     # 类型：
-    # 股票型：1
-    # 债券型：2
+    # 股票指数，股票型：1
+    # 债券指数，债券型：2
     # 货币型：3
     # 混合型：4
     fundList.loc[fundList.类型 == "混合型", "类型"] = 4.0
     fundList.loc[fundList.类型 == "货币型", "类型"] = 3.0
     fundList.loc[fundList.类型 == "债券型", "类型"] = 2.0
     fundList.loc[fundList.类型 == "股票型", "类型"] = 1.0
+    fundList.loc[fundList.类型 == "债券指数", "类型"] = 2.0
+    fundList.loc[fundList.类型 == "股票指数", "类型"] = 1.0
 
     # 收益转为float型
     Str2Float(length, fundList, "近1月收益")
     Str2Float(length, fundList, "近1年收益")
     Str2Float(length, fundList, "近3年收益")
     # 风险等级
-    # 无：1
+    # 无：None
     # 低：2
     # 中：3
     # 高：4
@@ -46,6 +48,8 @@ def EigenVector(fundList, outEncoding, outpathFile):
     # 基金规模转为float，单位为亿元
     fundScaleFloat = fundList["基金规模"].str.strip("亿元").astype(float)
     fundList["基金规模"] = fundScaleFloat
+
+    # fundList.to_csv(outpathFile, encoding=outEncoding)
 
     # Z-score标准化
     fundList_2 = fundList[["类型", "近1月收益", "近1年收益", "近3年收益", "风险等级", "基金规模"]]
