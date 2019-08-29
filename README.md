@@ -4,6 +4,14 @@
 `训练集中CreateData.py，评分矩阵中CreatePoint_csv.py，CreatePoint_list.py，ReadJudge.py代码由lsm同学完成！`
 
 ***
+8/29：
+
+* 减少文件的产生，解决了DataFrame处理时的index重复问题
+* 增强模块间的独立性
+
+***
+
+***
 8/27:
 
 * 根据软院方面给出的数据修改文件读写和处理部分代码，提供有购买记录的旧基金和无购买记录的新基金
