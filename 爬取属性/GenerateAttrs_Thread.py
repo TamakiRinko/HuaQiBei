@@ -36,6 +36,7 @@ def getStockList(lst, fundList):
     fundCode = fundList.FundCode
     # fundName = fundList.name
     fundType = fundList.type
+    print("lenOfFundCode: %d" % len(fundCode))
     for i in range(len(fundCode)):
         lst.append([str(fundCode[i]).zfill(6), fundType[i]])    # 基金fundCode补全为6位
 
@@ -98,7 +99,9 @@ def threadGetStockInfo(lst):
 
 def main():
     global Length
-    fundList = pd.read_csv(inpathFile, encoding=inEncoding)
+    # fundList = pd.read_csv(inpathFile, encoding=inEncoding)
+    fundList = 爬取属性.Merge.merge()
+    print(fundList)
     slist = []
     getStockList(slist, fundList)
     Length = len(slist)
@@ -106,7 +109,7 @@ def main():
     FundFrame = pd.DataFrame(infoList, columns=["FundCode", "类型", "近1月收益", "近1年收益", "近3年收益", "风险等级", "基金规模"])
     # FundFrame.sort_values("FundCode", inplace=True)     # 按FundCode排序
     # FundFrame.reset_index(drop=True, inplace=True)      # 行号换回0~n
-    FundFrame.to_csv(outpathFileString, encoding=outEncoding)   # 初始文件保留
+    FundFrame.to_csv(outpathFileString, encoding=outEncoding, index=False)   # 初始文件保留
     爬取属性.GenerateEigen.EigenVector(FundFrame, outEncoding, outpathFile)
 
 

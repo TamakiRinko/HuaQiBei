@@ -56,4 +56,4 @@ def EigenVector(fundList, outEncoding, outpathFile):
     fundList_2 = preprocessing.scale(fundList_2)
     fundList_2 = pd.DataFrame(fundList_2, columns=["类型", "近1月收益", "近1年收益", "近3年收益", "风险等级", "基金规模"])
     fundList_2.insert(0, "FundCode", fundList["FundCode"])
-    fundList_2.to_csv(outpathFile, encoding=outEncoding)
+    fundList_2.to_csv(outpathFile, encoding=outEncoding, index=False)

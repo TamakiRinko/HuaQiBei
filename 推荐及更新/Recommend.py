@@ -1,15 +1,17 @@
 import pandas as pd
 import heapq
 import math
+import 评分矩阵.ReadPoint_csv
 from sklearn.metrics.pairwise import cosine_similarity
 pathIndex = "../基金列表及属性/"
 
 newFundAttr = pd.read_csv(pathIndex + "基金属性_new.csv")
-FavorAttr = pd.read_csv(pathIndex + "FavorAttr.csv")
+# FavorAttr = pd.read_csv(pathIndex + "FavorAttr.csv")
 heap = []
 recommendNum = 10
 
 for lineNew in newFundAttr.itertuples():
+    FavorAttr = 评分矩阵.ReadPoint_csv.main()
     customer = 0  # 标识用户代号
     recommended = 0
     for lineOld in FavorAttr.itertuples():

@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import math
 import 评分矩阵.Standardization
+import 评分矩阵.CreatePoint_csv
 
 pathIndex = "../基金列表及属性/"
 UserCategory = ["C1", "C2", "C3", "C4", "C5"]
@@ -23,21 +24,24 @@ def GenerateFavor(PointMatrix, EigenvectorFrame, AllFundList, FundList):
                 tempSeries = tempSeries + (PointMatrix[i, j] * EigenvectorFrame.loc[AllFundList.index(FundList[j]), :])
         FavorFrame = FavorFrame.append(tempSeries, ignore_index=True)
     # 得到用户喜好向量文件
-    FavorFrame.to_csv(pathIndex + "FavorAttr.csv", encoding="utf_8_sig")
+    # print(FavorFrame)
+    # FavorFrame.to_csv(pathIndex + "FavorAttrNew.csv", encoding="utf_8_sig")
+    return FavorFrame
 
 
 def main():
-    # 训练集
-    RawData = pd.read_csv(pathIndex + "TrainData.csv")
-    # 基金属性向量和全部基金编号的ndarray
+    # 获得Point
+    PointFrame = 评分矩阵.CreatePoint_csv.createPoint()
+    # 标准化
+    PointFrame = 评分矩阵.Standardization.Standardization_1(PointFrame)
+    print("Point标准化完毕")
+
+    # 基金属性向量和全部基金编号的list
     EigenvectorFrame = pd.read_csv(pathIndex + "基金属性.csv")
     AllFundList = list(EigenvectorFrame.FundCode)
     EigenvectorFrame = EigenvectorFrame[["类型", "近1月收益", "近1年收益", "近3年收益", "风险等级", "基金规模"]]
 
-    # 读取评分csv文件
-    PointFrame = pd.read_csv(pathIndex + "Point.csv")
-    # 标准化
-    PointFrame = 评分矩阵.Standardization.Standardization_1(PointFrame)
+
 
     # # 将用户分为五类
     # FrameList = []  # 不同C类的DataFrame
@@ -53,7 +57,6 @@ def main():
     UserNum = UserList.shape[0]
     FundNum = FundList.shape[0]
     # print("UserNum:%d FundNum:%d" % (UserNum, FundNum))
-    FundIndex = 0
     UserIndex = 0
     FundIndexList = []
     UserIndexList = []
@@ -99,8 +102,9 @@ def main():
     PointMatrix = np.zeros((UserNum, FundNum))  # 评分矩阵
     for line in PointFrame.itertuples():
         PointMatrix[line.UserIndex, line.FundIndex] = line.Point
-    GenerateFavor(PointMatrix, EigenvectorFrame, AllFundList, FundList)
+    FavorFrame = GenerateFavor(PointMatrix, EigenvectorFrame, AllFundList, FundList)
     # index = index + 1
+    return FavorFrame
 
 
 if __name__ == '__main__':
