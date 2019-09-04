@@ -1,9 +1,9 @@
 # README
 
-`不考虑用户分类，目前未考虑训练集与测试集`  
-`余留问题：CreateDataGX生成的用户数量不定，可能超过用户记录中的用户数量`
-`使用方式: 保持各文件位置不变，运行 推荐与更新 中的 Recommend.py 即可`  
-`训练集中CreateData.py，评分矩阵中CreatePoint_csv.py，CreatePoint_list.py，ReadJudge.py代码由lsm同学完成！`
+`1. 不考虑用户分类，目前未考虑训练集与测试集`  
+`2. 余留问题：CreateDataGX生成的用户数量不定，可能超过用户记录中的用户数量；每次生成训练集，爬取数据，耗时长，需与软院协商数据来源问题`  
+`3. 使用方式: 保持各文件位置不变，运行 推荐与更新 中的 Recommend.py 即可`  
+`4. 训练集中CreateData.py，评分矩阵中CreatePoint_csv.py代码由lsm同学完成！训练集中CreateDataGX.py, 用户画像部分由gx同学完成！`
 
 ***
 
