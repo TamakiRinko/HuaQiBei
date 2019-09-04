@@ -12,46 +12,34 @@ UserCategory = ["C1", "C2", "C3", "C4", "C5"]
 PointColumns = ["User", "FundCode", "Point", "Type"]
 
 def GenerateFavor(PointMatrix, EigenvectorFrame, AllFundList, FundList):
-    # print(PointMatrix)
     FavorFrame = pd.DataFrame()
     [rows, cols] = PointMatrix.shape
-    # print(rows, cols)
     for i in range(rows):
         tempSeries = pd.Series([0, 0, 0, 0, 0, 0], index=["类型", "近1月收益", "近1年收益", "近3年收益", "风险等级", "基金规模"])
         for j in range(cols):
             if PointMatrix[i, j] != 0:
                 # 累加获得用户喜好向量
+                # print(FundList[j])
                 tempSeries = tempSeries + (PointMatrix[i, j] * EigenvectorFrame.loc[AllFundList.index(FundList[j]), :])
         FavorFrame = FavorFrame.append(tempSeries, ignore_index=True)
     # 得到用户喜好向量文件
-    # print(FavorFrame)
-    # FavorFrame.to_csv(pathIndex + "FavorAttrNew.csv", encoding="utf_8_sig")
+    FavorFrame.to_csv(pathIndex + "FavorAttrNew.csv", encoding="gbk")
     return FavorFrame
 
 
 def main():
     # 获得Point
     PointFrame = 评分矩阵.CreatePoint_csv.createPoint()
+    # PointFrame = pd.read_csv(pathIndex + "Point_2.csv", encoding="gbk")
     # 标准化
-    PointFrame = 评分矩阵.Standardization.Standardization_1(PointFrame)
+    PointFrame = 评分矩阵.Standardization.Standardization_4(PointFrame)
     print("Point标准化完毕")
 
     # 基金属性向量和全部基金编号的list
-    EigenvectorFrame = pd.read_csv(pathIndex + "基金属性.csv")
+    EigenvectorFrame = pd.read_csv(pathIndex + "基金属性_旧基金2.0.csv", encoding="gbk")
     AllFundList = list(EigenvectorFrame.FundCode)
     EigenvectorFrame = EigenvectorFrame[["类型", "近1月收益", "近1年收益", "近3年收益", "风险等级", "基金规模"]]
 
-
-
-    # # 将用户分为五类
-    # FrameList = []  # 不同C类的DataFrame
-    # for Category in UserCategory:
-    #     FrameList.append(PointFrame.loc[PointFrame.Type == Category].copy())    # 每个Frame指定为拷贝
-
-    # index = 0   # 表明种类
-    # 对每一类用户分别预测
-    # for Frame in FrameList:
-        # 按不重合的方式对用户/商品重编码
     UserList = PointFrame.User.unique()
     FundList = PointFrame.FundCode.unique()
     UserNum = UserList.shape[0]
@@ -70,7 +58,6 @@ def main():
         FundIndexList.append(np.where(FundList == line.FundCode)[0][0])
     PointFrame.loc[:, 'UserIndex'] = UserIndexList
     PointFrame.loc[:, 'FundIndex'] = FundIndexList
-    # print(Frame)
 
     ''' 调试代码
     print(Frame)
@@ -102,8 +89,9 @@ def main():
     PointMatrix = np.zeros((UserNum, FundNum))  # 评分矩阵
     for line in PointFrame.itertuples():
         PointMatrix[line.UserIndex, line.FundIndex] = line.Point
+    # 生成偏好向量
+    print("生成偏好向量")
     FavorFrame = GenerateFavor(PointMatrix, EigenvectorFrame, AllFundList, FundList)
-    # index = index + 1
     return FavorFrame
 
 

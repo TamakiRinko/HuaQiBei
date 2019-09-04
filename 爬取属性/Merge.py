@@ -1,16 +1,25 @@
 import pandas as pd
+pathIndex = "../基金列表及属性/"
 
+def merge(inPath, inEncode):
+    df = pd.read_csv(pathIndex + inPath, encoding=inEncode)
 
-def merge():
-    df = pd.read_csv("../基金列表及属性/旧基金.csv", encoding="gbk")
     List = df.loc[(df.类型 == "债券型") | (df.类型 == "货币型") | (df.类型 == "混合型")
                   | (df.类型 == "股票型") | (df.类型 == "股票指数") | (df.类型 == "债券指数")]
     partList = List[["基金编号(此值唯一)", "类型"]].copy()
+
+    # 保存一份副本: 旧基金2.0_2.csv用于作为最后的可用基金
+    df2 = df.copy()
+    df2.rename(columns={"基金编号(此值唯一)": "FundCode", "类型": "type"}, inplace=True)
+    df2.to_csv(pathIndex + inPath[0:-4] + "_2.csv", encoding=inEncode, index=False)
+
     partList.reset_index(inplace=True, drop=True)
     partList.rename(columns={"基金编号(此值唯一)": "FundCode", "类型": "type"}, inplace=True)
     # partList.to_csv("../基金列表及属性/基金列表_四种类型.csv", encoding="utf_8_sig", index=False)
+    partList["FundCode"] = partList["FundCode"].astype(int)     # FundCode为int
     return partList
 
 
 if __name__ == '__main__':
-    merge()
+    merge("旧基金2.0.csv", "gbk")
+    merge("新基金2.0.csv", "utf-8")

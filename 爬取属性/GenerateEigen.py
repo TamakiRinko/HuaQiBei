@@ -13,8 +13,8 @@ def Str2Float(length, fundList, colunmName):
     fundList[colunmName] = fundList[colunmName].astype(float)
 
 def EigenVector(fundList, outEncoding, outpathFile):
-    print("\n生成中……")
     length = len(fundList)
+
     # 类型：
     # 股票指数，股票型：1
     # 债券指数，债券型：2
@@ -31,6 +31,7 @@ def EigenVector(fundList, outEncoding, outpathFile):
     Str2Float(length, fundList, "近1月收益")
     Str2Float(length, fundList, "近1年收益")
     Str2Float(length, fundList, "近3年收益")
+
     # 风险等级
     # 无：None
     # 低：2
@@ -57,3 +58,4 @@ def EigenVector(fundList, outEncoding, outpathFile):
     fundList_2 = pd.DataFrame(fundList_2, columns=["类型", "近1月收益", "近1年收益", "近3年收益", "风险等级", "基金规模"])
     fundList_2.insert(0, "FundCode", fundList["FundCode"])
     fundList_2.to_csv(outpathFile, encoding=outEncoding, index=False)
+    print("\n股票属性生成完毕")

@@ -7,7 +7,10 @@ import requests
 import time
 import random
 import math
+import 训练集.CreateData_GX
+import 爬取属性.GenerateAttrs_Thread
 pathIndex = "../基金列表及属性/"
+# pathIndex2 = "../用户画像/数据/"
 
 
 def Train(data):
@@ -20,19 +23,20 @@ def Time(t):
 
 
 def createPoint():
-    # 首先将5个类别的数据分离开来
-    RawData = pd.read_csv(pathIndex + "TrainData.csv")
-    UserCategory = ["C1", "C2", "C3", "C4", "C5"]
-    TrainList = []
-    for Category in UserCategory:
-        List = RawData.ix[RawData.用户类型 == Category]
-        TrainList.append(List)
+    # 生成基金属性
+    爬取属性.GenerateAttrs_Thread.main("旧基金2.0.csv", "gbk")
+    爬取属性.GenerateAttrs_Thread.main("新基金2.0.csv", "utf-8")
+    # 生成训练集
+    训练集.CreateData_GX.createData()
+
+    RawData = pd.read_csv(pathIndex + "交易记录.csv", encoding="gbk")
+    UserRecord = pd.read_csv(pathIndex + "用户记录.csv", encoding="gbk")
 
     # 得到用户评分矩阵
     # 将用户编码与基金代码按照不重合的规则重编码
-    UserList = RawData.用户编码.unique()
+    UserList = RawData.客户编号.unique()
     # 破案，有人这两个月没买！现已修改为每个人都会买！
-    FundList = RawData.基金代码.unique()
+    FundList = RawData.基金编号.unique()
     # 计算中用户/商品数量
     FundNum = len(FundList)
     UserNum = len(UserList)
@@ -43,23 +47,24 @@ def createPoint():
     PointFundList = []
     PointTypeList = []
     for i in range(UserNum):
+        print(UserList[i])
         # 框选用户数据
-        UserData = RawData.ix[RawData.用户编码 == UserList[i]]
+        UserData = RawData.ix[RawData.客户编号 == UserList[i]]
         # 获得其投资总额
-        InvestSum = sum(UserData.投资金额)
+        InvestSum = sum(UserData.交易金额)
         # 获得其最晚活跃时间
         TimeList = []
-        for x in UserData.投资时间:
-            TimeList.append(time.mktime(time.strptime(x,'%Y-%m-%d')))
+        for x in UserData.交易时间:
+            TimeList.append(time.mktime(time.strptime(x,'%Y-%m-%d %H:%M:%S')))
         MaxTime = np.max(TimeList)
         # 框选其投资数据，计算评分要素
-        for FundCode in UserData.基金代码.unique():
-            InvestData = UserData.ix[UserData.基金代码 == FundCode]
-            Invest = sum(InvestData.投资金额)
+        for FundCode in UserData.基金编号.unique():
+            InvestData = UserData.ix[UserData.基金编号 == FundCode]
+            Invest = sum(InvestData.交易金额)
             j = np.where(FundList == FundCode)
             t = 0
-            for x in InvestData.投资时间:
-                tx = time.mktime(time.strptime(x,'%Y-%m-%d'))
+            for x in InvestData.交易时间:
+                tx = time.mktime(time.strptime(x,'%Y-%m-%d %H:%M:%S'))
                 if tx >= t:
                     t = tx
             # 评分模型
@@ -67,11 +72,12 @@ def createPoint():
             PointFundList.append(FundCode)
             PointUserList.append(UserList[i])
             PointList.append(Point)
-            PointTypeList.append(UserData.iat[0,2])
+            # PointTypeList.append(UserData.iat[0,2])
+            # print("C" + str(UserRecord.iat[UserList[i], 9] + 1))
+            PointTypeList.append("C" + str(UserRecord.iat[UserList[i], 9] + 1))
 
     PointCSV = pd.DataFrame({"User":PointUserList,"FundCode":PointFundList,"Point":PointList,'Type':PointTypeList})
-    # PointCSV.to_csv(pathIndex + "Point.csv")
-    # print(PointCSV)
+    # PointCSV.to_csv(pathIndex + "Point_2.csv")
     return PointCSV
 
 
