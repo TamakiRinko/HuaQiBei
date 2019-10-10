@@ -1,2 +1,4 @@
-list = [2, 3]
-print(list.index(4))
+import surprise as sp
+
+list = [1, 3]
+print(list)
